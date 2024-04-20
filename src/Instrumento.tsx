@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './ListaInstrumentos.css';
+import './ListaInstrumentos.css'; // Estilo personalizado
 
 interface Instrumento {
   id: number;
@@ -10,14 +10,13 @@ interface Instrumento {
   cantidadVendida: number;
 }
 
-const Instrumento = () => {
+const InstrumentoList = () => {
   const [instrumentos, setInstrumentos] = useState<Instrumento[]>([]);
-
 
   useEffect(() => {
     const obtenerDatos = async () => {
       try {
-        const respuesta = await fetch('/instrumentos.json');
+        const respuesta = await fetch('/instrumentos.json'); // Obtener datos de un archivo JSON
         const datos = await respuesta.json();
         setInstrumentos(datos.instrumentos);
       } catch (error) {
@@ -29,43 +28,26 @@ const Instrumento = () => {
   }, []);
 
   return (
-    <div className="instrumento"style={{ fontFamily: 'Helvetica, Arial, sans-serif' }}>
+    <div className="instrumento"> {/* Contenedor principal */}
       {instrumentos.map(instrumento => (
-        <div key={instrumento.id} className="item-venta">
-          <img src={"/img/" + instrumento.imagen} alt={instrumento.instrumento} />
-          <div className="detalles-instrumento">
-            <p style={{ fontSize: '30px' }}>{instrumento.instrumento}</p>
-  
-            <p style={{ fontSize: '25px', fontWeight: 'bold' }}>${instrumento.precio}</p>
+        <div key={instrumento.id} className="item-venta"> {/* Elemento de venta */}
+          <img src={"/img/" + instrumento.imagen} alt={instrumento.instrumento} /> {/* Imagen del instrumento */}
+          <div className="detalles-instrumento"> {/* Detalles del instrumento */}
+            <p>{instrumento.instrumento}</p> {/* Nombre del instrumento */}
+            <p>${instrumento.precio}</p> {/* Precio del instrumento */}
 
-            {instrumento.costoEnvio === "G" ? (
-              
-  <p style={{ color: 'green', fontSize: '18px' }}>
-    <img src="/img/camion.png" alt="Envío Gratis" style={{ verticalAlign: 'middle', marginRight: '5px' }} /> Envío gratis a todo el paìs
-  </p>
-) : (
-  <p style={{ color: '#e67300', fontSize: '20px' }}>
-    {instrumento.costoEnvio === "G" ? (
-      <span style={{fontSize: '15px'}}>
-        <img src="ruta_de_la_imagen" alt="Envío Gratis" style={{ verticalAlign: 'middle', marginRight: '5px' }} />
-        Envío Gratis
-      </span>
-    ) : (
-      <span style={{ fontSize: '18px' }}>El costo de envio interior argentina: ${instrumento.costoEnvio}</span>
-    )}
-  </p>
-)}
+            {instrumento.costoEnvio === "G" ? ( // Mostrar mensaje de envío gratis
+              <p style={{ color: 'green' }}>Envío gratis a todo el país</p>
+            ) : (
+              <p style={{ color: '#e67300' }}>El costo de envío interior Argentina: ${instrumento.costoEnvio}</p>
+            )}
 
-            
-  
-            <p style={{  color: 'grey', fontSize: '15px' }}>{instrumento.cantidadVendida} arituclos vendidos</p>
+            <p>{instrumento.cantidadVendida} artículos vendidos</p> {/* Cantidad vendida */}
           </div>
         </div>
       ))}
     </div>
   );
-  
-  
 };
 
-export default Instrumento;
+export default InstrumentoList;
